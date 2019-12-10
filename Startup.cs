@@ -24,7 +24,15 @@ namespace emo_back
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:4200");
+            }));
+
             services.AddDbContext<emo_back.Data.EmoDbContext>(optionsAction =>
             {
                 optionsAction.UseInMemoryDatabase(databaseName: "emochat");
@@ -44,6 +52,7 @@ namespace emo_back
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("@EmoChat_YowKey_YowMan_GeniusRocks"))
                 };
             });
+            services.AddSignalR();
             services.AddScoped<MessagingService, MessagingService>();
         }
 
@@ -54,6 +63,8 @@ namespace emo_back
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             //app.UseHttpsRedirection();
 
@@ -66,6 +77,7 @@ namespace emo_back
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<MessagingHub>("Notify");
             });
         }
     }
