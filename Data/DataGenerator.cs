@@ -27,7 +27,8 @@ namespace emo_back.Data
                 var applicationUser = new ApplicationUser
                 {
                     UserName = "default",
-                    Email = "default@emo.ee"
+                    Email = "default@emo.ee",
+                    SecurityStamp = Guid.NewGuid().ToString()
                 };
                 string hash = new PasswordHasher<ApplicationUser>().HashPassword(applicationUser, "DeFaUlTpAsSwOrD");
                 applicationUser.PasswordHash = hash;

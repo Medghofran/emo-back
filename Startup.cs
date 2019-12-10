@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using emo_back.Services;
+using emo_back.Models;
+using Microsoft.AspNetCore.Identity;
+using emo_back.Data;
 
 namespace emo_back
 {
@@ -37,6 +40,16 @@ namespace emo_back
             {
                 optionsAction.UseInMemoryDatabase(databaseName: "emochat");
             });
+
+            services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+            })
+            .AddEntityFrameworkStores<EmoDbContext>()
+            .AddDefaultTokenProviders();
 
             //Set Authentication Options
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -20,7 +20,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace GeniusLabs.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -50,6 +51,7 @@ namespace GeniusLabs.Controllers
                         var claims = new[]
                         {
                             new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         };
 
