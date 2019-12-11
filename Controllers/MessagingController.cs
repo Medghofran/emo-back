@@ -54,5 +54,22 @@ namespace emo_back.Controllers
             return new JsonResult(msg);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadStream([FromBody]VideoCaptureViewModel videoCapture)
+        {
+            string retMessage = string.Empty;
+
+            try
+            {
+                await _hubContext.Clients.All.BroadcastVideoStream(videoCapture);
+            }
+            catch (Exception e)
+            {
+                retMessage = e.Message;
+            }
+
+            return new JsonResult("peepee");
+        }
+
     }
 }

@@ -74,12 +74,10 @@ namespace GeniusLabs.Controllers
 
 
         // POST: /Account/Register
-        [HttpPost]
+        [HttpPost("/api/register")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -91,13 +89,13 @@ namespace GeniusLabs.Controllers
                         Email = model.Email,
                         Password = model.Password
                     };
-                    return RedirectToAction("GenerateToken", login);
+                    return new JsonResult("success");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return new JsonResult("Failure");
         }
 
         // GET: /Account/ConfirmEmail

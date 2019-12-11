@@ -6,7 +6,7 @@ namespace emo_back
 {
     public static class ConnectedUsers
     {
-        public static List<string> ConnectionIds { get; set; }
+        public static List<string> ConnectionIds { get; set; } = new List<string>();
     }
 
     public class MessagingHub : Hub<IMessagingHubClient>

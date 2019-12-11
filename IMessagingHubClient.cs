@@ -7,5 +7,6 @@ namespace emo_back
     public interface IMessagingHubClient
     {
         Task BroadcastMessage(MessageViewModel message);
+        Task BroadcastVideoStream(VideoCaptureViewModel videoCapture);
     }
 }
